@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Prompty z přednášky Jak se učit s AI pro studenty FŽP ČZU: pět rolí, 7denní výzva a pravidla FŽP.">
+<title>Balíček promptů FŽP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one calm reading column, a sticky row of role chips, prompts as copyable cards tinted by role (same identity as the lecture slides) */
+:root{
+  --bg:#FAFBFC; --surface:#FFFFFF; --sunk:#F3F6F8; --line:#DCE3EA;
+  --fg:#14233B; --muted:#5B6678; --accent:#2E8C84; --accent-soft:#E1F1EF; --warn:#C25A22; --warn-soft:#FCEBD8; --gold:#F3C98B; --hi-bg:#14233B; --hi-fg:#FAFBFC;
+  --tutor:#2E8C84; --tutor-bg:#E1F1EF;
+  --zk:#6F5BB0; --zk-bg:#EEE8F7;
+  --op:#B0702A; --op-bg:#FCEBD8;
+  --kouc:#3F72B8; --kouc-bg:#E4EEFB;
+  --kur:#5E6E8A; --kur-bg:#E6EAF1;
+  --display:'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --body:'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1A2B; --surface:#16233A; --sunk:#1B2A44; --line:#2B3B57;
+  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#7CC7BF; --accent-soft:#183A3A; --warn:#F0A070; --warn-soft:#3A2618; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4;
+  --tutor:#7CC7BF; --tutor-bg:#183A3A; --zk:#B7A6E6; --zk-bg:#2A2443; --op:#E8B36F; --op-bg:#3A2A18; --kouc:#8DB4EA; --kouc-bg:#1C2D47; --kur:#B0BCD2; --kur-bg:#232E42;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1A2B; --surface:#16233A; --sunk:#1B2A44; --line:#2B3B57;
+  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#7CC7BF; --accent-soft:#183A3A; --warn:#F0A070; --warn-soft:#3A2618; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4;
+  --tutor:#7CC7BF; --tutor-bg:#183A3A; --zk:#B7A6E6; --zk-bg:#2A2443; --op:#E8B36F; --op-bg:#3A2A18; --kouc:#8DB4EA; --kouc-bg:#1C2D47; --kur:#B0BCD2; --kur-bg:#232E42;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:720px;margin-inline:auto;display:flex;flex-direction:column;gap:56px}
+a{color:var(--accent);text-underline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,7vw,52px)}
+h2{font-size:clamp(26px,5vw,32px)}
+h3{font-size:21px}
+p{margin:0}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+header{padding-top:48px;display:flex;flex-direction:column;gap:16px}
+header h1 .u{color:var(--warn)}
+.lead{font-size:19px;color:var(--muted);max-width:60ch}
+.byline{font-size:14px;color:var(--muted)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-20px;padding:10px 20px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tabs button{font:600 15px var(--body);padding:8px 16px;border-radius:999px;border:1px solid transparent;background:var(--sunk);color:var(--fg);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+section{display:flex;flex-direction:column;gap:20px;scroll-margin-top:72px}
+.tips{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.tips li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline}
+.tips b{font-weight:600}
+.tips .k{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);min-width:88px}
+.days{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.days label{display:flex;gap:14px;align-items:center;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;cursor:pointer}
+.days input{width:22px;height:22px;accent-color:var(--accent);flex:none}
+.days .d{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);width:48px;flex:none}
+.days .t{min-width:0}
+.days .t small{display:block;color:var(--muted);font-size:14px}
+.days input:checked ~ .t{color:var(--muted);text-decoration:line-through}
+.days .key label{border-color:var(--warn);background:var(--warn-soft)}
+.role-head{display:flex;flex-direction:column;gap:8px;padding-left:16px;border-left:6px solid var(--c)}
+.role-head .eyebrow{color:var(--c)}
+.role-head p{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 16px 0}
+.card-top div{min-width:0;display:flex;flex-direction:column;gap:4px}
+.card-top p{font-size:15px;color:var(--muted)}
+.copy{flex:none;font:600 14px var(--body);color:var(--c);background:var(--cbg);border:0;border-radius:999px;padding:8px 14px;cursor:pointer}
+.copy.done{background:var(--c);color:var(--surface)}
+pre{margin:14px 16px 16px;padding:14px 16px;background:var(--cbg);border-radius:10px;font:15px/1.6 var(--mono);white-space:pre-wrap;word-break:break-word;overflow-x:auto}
+.step{font-size:15px;font-weight:600;padding:0 16px;margin-top:14px}
+.note{font-size:15px;color:var(--muted);padding:0 16px 16px}
+.tutor{--c:var(--tutor);--cbg:var(--tutor-bg)}
+.zk{--c:var(--zk);--cbg:var(--zk-bg)}
+.op{--c:var(--op);--cbg:var(--op-bg)}
+.kouc{--c:var(--kouc);--cbg:var(--kouc-bg)}
+.kur{--c:var(--kur);--cbg:var(--kur-bg)}
+.bonus{--c:var(--accent);--cbg:var(--sunk)}
+.rules{background:var(--hi-bg);color:var(--hi-fg);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.rules .eyebrow{color:var(--gold)}
+.rules a{color:var(--gold)}
+footer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px;display:flex;flex-direction:column;gap:8px}
+@media (min-width:640px){body{padding-inline:32px} nav{margin-inline:-32px;padding-inline:32px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Balíček promptů · FŽP ČZU</p>
+  <h1>Chci to mít hotové, nebo to chci <span class="u">umět</span>?</h1>
+  <p class="lead">Prompty z přednášky o učení s AI. Každý nechá AI pracovat s tebou, ne za tebe. Zkopíruj, doplň text v hranatých závorkách a vlož do AI.</p>
+  <p class="byline">Vlaďka Jurasová · AI koordinátorka FŽP ČZU</p>
+</header>
+
+<nav aria-label="Části balíčku">
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" id="tab-jak" aria-controls="jak" aria-selected="false">Než začneš</button>
+    <button type="button" role="tab" id="tab-tutor" aria-controls="tutor" aria-selected="false">Tutor</button>
+    <button type="button" role="tab" id="tab-zkousejici" aria-controls="zkousejici" aria-selected="false">Zkoušející</button>
+    <button type="button" role="tab" id="tab-oponent" aria-controls="oponent" aria-selected="false">Oponent</button>
+    <button type="button" role="tab" id="tab-kouc" aria-controls="kouc" aria-selected="false">Kouč</button>
+    <button type="button" role="tab" id="tab-kurator" aria-controls="kurator" aria-selected="false">Kurátor</button>
+    <button type="button" role="tab" id="tab-bonus" aria-controls="bonus" aria-selected="false">Bonus</button>
+    <button type="button" role="tab" id="tab-pravidla" aria-controls="pravidla" aria-selected="false">Pravidla FŽP</button>
+    <button type="button" role="tab" id="tab-vyzva" aria-controls="vyzva" aria-selected="false">7denní výzva</button>
+  </div>
+</nav>
+
+<section id="jak" role="tabpanel" aria-labelledby="tab-jak">
+  <h2>Než začneš</h2>
+  <ul class="tips">
+    <li><span class="k">Kontext</span><span>Přidej sylabus, slidy a své poznámky. Čím víc podkladů, tím víc AI odpovídá k tvému předmětu.</span></li>
+    <li><span class="k">Přemýšlení</span><span>Na učení zapni přemýšlecí režim (v ChatGPT tlačítko <b>Think</b>), ne ten nejrychlejší.</span></li>
+    <li><span class="k">Ověřování</span><span>Citace, čísla a jména si vždy dohledej v originále. Když zdroj nenajdeš, neexistuje.</span></li>
+    <li><span class="k">Data</span><span>Do bezplatných nástrojů nedávej osobní údaje ani cizí nepublikovaná data.</span></li>
+    <li><span class="k">Paměť</span><span>Na konci práce AI řekni: <b>zdokumentuj to, zapiš, ulož</b>. Co není zapsané, to pro AI příště neexistuje.</span></li>
+  </ul>
+</section>
+
+<section id="tutor" class="tutor" role="tabpanel" aria-labelledby="tab-tutor" hidden>
+  <div class="role-head"><p class="eyebrow">Role 1 · Tutor</p><h2>Nedává odpovědi. Klade otázky.</h2><p>Když něčemu nerozumíš nebo se učíš novou látku.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Rychlá verze</h3><p>Prompt ze slidu.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Buď můj tutor pro [TÉMA]. Nejdřív zjisti, co už vím. Ptej se vždy jen jednou otázkou a počkej na mou odpověď. Neprozrazuj řešení, naváděj mě nápovědami od obecných po konkrétní. Nakonec mě nech vysvětlit látku vlastními slovy.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Sokratovský tutor</h3><p>Delší verze. Hodí se i jako instrukce pro vlastního asistenta.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Budeš můj sokratovský tutor pro [PŘEDMĚT / TÉMA]. Jsem student/ka 1. ročníku vysoké školy.
+
+Pravidla:
+- Nevypracovávej úkol za mě a nedávej mi hotovou odpověď na první pokus.
+- Pokládej vždy jen jednu otázku a počkej na mou odpověď.
+- Nejdřív zjisti, co už chápu a kde jsem se zasekl/a.
+- Když se několikrát netrefím, dej mi nápovědu, ne celé řešení.
+- Nápovědy stupňuj: nejdřív směr, pak dílčí krok, nakonec vysvětlení.
+- Průběžně ověřuj, že rozumím, a nech mě vlastními slovy vysvětlit, proč jsem se tak rozhodl/a.
+- Celou odpověď mi dej, až když mi pomůže pochopit, ne jen dokončit úkol.
+- Když něco přesahuje moje podklady nebo si nejsi jistý, řekni to a doporuč mi zeptat se vyučujícího.
+
+Začni otázkou, co už o tématu vím.</pre></article>
+</section>
+
+<section id="zkousejici" class="zk" role="tabpanel" aria-labelledby="tab-zkousejici" hidden>
+  <div class="role-head"><p class="eyebrow">Role 2 · Zkoušející</p><h2>Přečíst si shrnutí není totéž jako umět odpovědět.</h2><p>Týden před zápočtem nebo zkouškou.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Rychlá verze</h3><p>Prompt ze slidu.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Z přiložených podkladů mi připrav 10 otázek od zapamatování po použití v praxi. Ptej se po jedné. Po každé odpovědi mi řekni, co chybí. Na konci shrň, co mám zopakovat.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Studijní balíček z podkladů</h3><p>Nejlépe v Gemini Notebook s nahranými materiály.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Pracuj jen se zdroji v tomto notebooku.
+
+Téma: [TÉMA]
+Co mám na konci umět: [CÍL, třeba ze sylabu]
+
+Vytvoř mi studijní balíček:
+1. stručný přehled klíčových pojmů,
+2. pět kontrolních otázek od jednoduchých po náročnější,
+3. tři časté omyly nebo záměny,
+4. krátký kvíz,
+5. jednu úlohu, kde znalost použiju v nové situaci.
+
+Každé tvrzení opři o zdroje v notebooku. Když zdroje něco nepokrývají, řekni to.
+Odpovědi na otázky a kvíz mi neukazuj, dokud o ně nepožádám.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Zkouška bez AI</h3><p>Ověří, jestli to umíš ty, nebo jen AI. Dva kroky.</p></div></div>
+    <p class="step">Krok 1: nech si připravit zadání</p>
+    <div class="card-top"><div><p>Zkopíruj a doplň.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Pracoval/a jsem s AI na tomhle úkolu: [ZADÁNÍ]
+Měl/a jsem se naučit: [CO]
+AI jsem použil/a takhle: [JAK]
+
+Připrav mi krátkou kontrolu, kterou zvládnu bez AI za 10 až 15 minut. Má ověřit, jestli:
+1. rozumím principu,
+2. umím obhájit svá rozhodnutí,
+3. poznám chybu nebo slabý argument,
+4. umím znalost použít v nové situaci.
+
+Dej mi jen zadání. Správné odpovědi zatím neukazuj.</pre>
+    <p class="step">Krok 2: zavři AI a odpověz sám/sama, klidně na papír. Pak se vrať:</p>
+    <div class="card-top"><div><p>Pošli svou odpověď.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Tady je moje odpověď: [ODPOVĚĎ]
+Ukaž mi, jak vypadá dobrá odpověď, co mi chybí a jestli u mě vidíš známky povrchního porozumění.</pre></article>
+</section>
+
+<section id="oponent" class="op" role="tabpanel" aria-labelledby="tab-oponent" hidden>
+  <div class="role-head"><p class="eyebrow">Role 3 · Oponent</p><h2>Najdi, co nevidím.</h2><p>AI má sklon ti přitakávat. O kritiku si řekni výslovně.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Brutálně upřímná zpětná vazba</h3><p>Na argument, názor nebo prezentaci.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Tady je můj argument: [ARGUMENT]. Dej mi brutálně upřímnou zpětnou vazbu a 3 nejsilnější protiargumenty.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Kontrola textu proti literatuře</h3><p>Na seminárky. Nahraj do Gemini Notebook svůj text i články a pouštěj kontroly po jedné.</p></div><button class="copy" type="button">Kopírovat vše</button></div>
+<pre>1. Jaké argumenty předkládám ve svém textu? Jsou dostatečně podložené nahranou odbornou literaturou?
+
+2. Je můj text v rozporu se zjištěními v nahraných článcích, nebo některá důležitá zjištění přehlíží?
+
+3. Která tvrzení v mém textu potřebují silnější citační oporu?
+
+4. Kde v mém textu chybí logická návaznost? Například mezi úvodem a metodikou nebo mezi výsledky a závěrem.</pre></article>
+</section>
+
+<section id="kouc" class="kouc" role="tabpanel" aria-labelledby="tab-kouc" hidden>
+  <div class="role-head"><p class="eyebrow">Role 4 · Kouč</p><h2>Při psaní se tvoří myšlenky. Nenech AI psát za tebe.</h2><p>Kouč ukáže, kde text kulhá. Opravit ho musíš ty.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Rychlá verze</h3><p>Prompt ze slidu.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Buď můj kritický kouč, ne autor. Nepřepisuj můj text. Nejdřív mi polož 3 otázky, které mi pomůžou najít slabá místa. Pak označ největší mezery a ke každé dej nápovědu, ne hotové řešení.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Kritický kouč, ne autor</h3><p>Podrobná verze se strukturovaným výstupem.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Budeš fungovat jako kritický kouč, ne jako autor mé odpovědi.
+
+Zadání úkolu: [ZADÁNÍ]
+Můj první pokus: [TEXT / ŘEŠENÍ / ARGUMENT]
+
+Pravidla:
+1. Nepiš finální odpověď za mě.
+2. Neopravuj celý text do hotové podoby.
+3. Nejdřív mi polož 3 až 5 otázek, které mi pomohou najít slabá místa.
+4. Pak označ největší mezery v argumentaci, důkazech, logice nebo srozumitelnosti.
+5. Ke každé mezeře dej krátkou nápovědu, ne hotové řešení.
+6. Na konci mi navrhni, co mám přepracovat jako další krok.
+
+Výstup rozděl na:
+A. Co už funguje
+B. Kde je problém
+C. Otázky k přemýšlení
+D. Nápovědy bez hotového řešení
+E. Doporučený další krok</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Které rady AI přijmu?</h3><p>Po zpětné vazbě. Rozhoduješ ty a za výsledek odpovídáš ty.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Pomoz mi rozhodnout, které rady od AI přijmu a které ne.
+
+Zadání: [ZADÁNÍ]
+Moje původní verze: [PŮVODNÍ VERZE]
+Zpětná vazba od AI: [ZPĚTNÁ VAZBA]
+Moje upravená verze: [UPRAVENÁ VERZE]
+
+Veď mě k tomu, abych sám/sama jasně odpověděl/a:
+1. Které návrhy AI přijímám a proč.
+2. Které návrhy AI odmítám a proč.
+3. Kde AI upozornila na skutečný problém.
+4. Kde byla zpětná vazba příliš obecná, nepřesná nebo mimo kontext.
+5. Jak se změnil můj pohled na to, co je kvalitní práce.
+6. Co bych příště udělal/a jinak ještě před použitím AI.
+
+Neodpovídej za mě. Ptej se po jednom bodu a čekej na mou odpověď.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Vlastní AI kouč</h3><p>Ulož si ho jako Gem v Gemini, Projekt v Claudovi nebo vlastní GPT v ChatGPT.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Budeš můj kouč pro [DOVEDNOST, třeba odborné psaní, psaní v angličtině nebo prezentování]. Mým cílem je tu dovednost zlepšovat, ne mít hotové výstupy.
+
+Pravidla:
+- Nedělej práci za mě, ani když tě o to požádám. Připomeň mi, proč jsem si tě vytvořil/a.
+- Na začátku se mě zeptej, kde teď jsem a čeho chci dosáhnout.
+- Po každém mém pokusu mi řekni jednu věc, která funguje, a jednu, na které mám zapracovat.
+- Dávej mi krátká cvičení na 10 až 15 minut.</pre></article>
+</section>
+
+<section id="kurator" class="kur" role="tabpanel" aria-labelledby="tab-kurator" hidden>
+  <div class="role-head"><p class="eyebrow">Role 5 · Kurátor</p><h2>Tvoje poznámky, které umí odpovídat.</h2><p>Do Gemini Notebook nahraj sylabus, slidy, články a poznámky z jednoho předmětu. AI odpovídá jen z nich a ukáže, odkud odpověď vzala.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Rychlé otázky do notebooku</h3><p>Tři otázky, se kterými začít.</p></div><button class="copy" type="button">Kopírovat vše</button></div>
+<pre>Na co se mám ke zkoušce zaměřit podle sylabu?
+
+Kde v mých podkladech je [POJEM]? Ukaž zdroj.
+
+Porovnej, co o [TÉMATU] říká přednáška a co článek.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Z více zdrojů jeden mentální model</h3><p>Když chceš propojit přednášku, učebnici a články. Dva kroky.</p></div></div>
+    <p class="step">Krok 1: v Gemini Notebook s nahranými zdroji</p>
+    <div class="card-top"><div><p>Najde principy a rozpory.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Pracuj jen s nahranými zdroji. Najdi opakující se principy, unikátní nápady, příklady, frameworky, rozpory a místa, kde se zdroje podporují nebo zpochybňují. Odstraň povrchové opakování a zachovej důležité nuance. U každého principu nebo rozporu uveď, ze kterého zdroje vychází.</pre>
+    <p class="step">Krok 2: výsledek vlož do ChatGPT, Gemini nebo Clauda</p>
+    <div class="card-top"><div><p>Složí z nich jeden model.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Z těchto zjištění vytvoř jeden prakticky použitelný mentální model. Vysvětli jeho hlavní části a jak spolu souvisejí, kde jsou hranice jeho použití, kdy pomůže a kde by mohl klamat. Přidej příklady použití v mém oboru [OBOR] a u zkoušky.</pre></article>
+</section>
+
+<section id="bonus" class="bonus" role="tabpanel" aria-labelledby="tab-bonus" hidden>
+  <div class="role-head"><p class="eyebrow">Bonus</p><h2>Učení přes špatné příklady</h2><p>Trénuje přesně to, co ti AI nedá: poznat, kdy je něco špatně.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Najdi chybu</h3><p>Pět příkladů, chyby hledáš ty.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Učím se [TÉMA] a chci umět rozpoznat chyby typu [TYP CHYBY, pokud ho znám]. Jsem student/ka 1. ročníku.
+
+Vytvoř 5 realistických příkladů s chybou, jakou by mohl udělat student na mé úrovni. Chyby neoznačuj, chci je najít sám/sama.
+
+Až ti pošlu, co jsem našel/našla, ukaž mi klíč: kde je chyba, proč vzniká a jak ji opravit. Když nějakou chybu nenajdu, nejdřív mě k ní naveď otázkou.</pre></article>
+</section>
+
+<section id="pravidla" role="tabpanel" aria-labelledby="tab-pravidla" hidden>
+  <div class="rules">
+    <p class="eyebrow">Pravidla FŽP</p>
+    <h2>Smíš AI použít?</h2>
+    <p>Než AI použiješ ve studiu, přečti si pokyn děkana a zadání od vyučujícího. Za svůj výsledek odpovídáš ty.</p>
+    <p><a href="https://www.fzp.czu.cz/dl/142758?lang=cs">Pokyn děkana č. 2/2025: Pokyny a doporučení pro využívání AI na FŽP ČZU (PDF)</a></p>
+  </div>
+</section>
+
+<section id="vyzva" role="tabpanel" aria-labelledby="tab-vyzva" hidden>
+  <p class="eyebrow">10 až 20 minut denně</p>
+  <h2>7denní výzva</h2>
+  <p class="lead">Každý den jedna role, na látce, kterou se zrovna učíš. Stačí bezplatné verze. Zaškrtnutí si stránka pamatuje v tvém prohlížeči.</p>
+  <ul class="days">
+    <li><label><input type="checkbox" id="d1"><span class="d">Den 1</span><span class="t">Tutor na dnešní látku<small>Sokratovský tutor</small></span></label></li>
+    <li><label><input type="checkbox" id="d2"><span class="d">Den 2</span><span class="t">Zkoušející nad poznámkami<small>Studijní balíček z podkladů</small></span></label></li>
+    <li><label><input type="checkbox" id="d3"><span class="d">Den 3</span><span class="t">Oponent na tvůj názor<small>Brutálně upřímná zpětná vazba</small></span></label></li>
+    <li><label><input type="checkbox" id="d4"><span class="d">Den 4</span><span class="t">Kouč na tvůj vlastní text<small>Kritický kouč, ne autor</small></span></label></li>
+    <li><label><input type="checkbox" id="d5"><span class="d">Den 5</span><span class="t">Jeden předmět do Gemini Notebook<small>Kurátor</small></span></label></li>
+    <li><label><input type="checkbox" id="d6"><span class="d">Den 6</span><span class="t">Stejný dotaz ve dvou různých AI<small>Kde se liší a které víc věříš?</small></span></label></li>
+    <li class="key"><label><input type="checkbox" id="d7"><span class="d">Den 7</span><span class="t">Zkouška bez AI: zavři AI a zkus to bez ní<small>Nejdůležitější den. Prompt Zkouška bez AI.</small></span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <p>Čísla z přednášky: <a href="https://www.pnas.org/doi/10.1073/pnas.2422633122">Bastani a kol., Generative AI without guardrails can harm learning, PNAS 2025</a>.</p>
+  <p>Některé prompty vycházejí z kurzů a veřejných ukázek a pro studenty jsou upravené. Kontroly textu proti literatuře vycházejí z ukázky Andyho Stapletona.</p>
+  <p>Vlaďka Jurasová · AI koordinátorka FŽP ČZU</p>
+</footer>
+</div>
+
+<script>
+
+var ids=['jak','tutor','zkousejici','oponent','kouc','kurator','bonus','pravidla','vyzva'];
+function show(id){
+  if(ids.indexOf(id)<0) id='jak';
+  ids.forEach(function(x){
+    var on=x===id;
+    document.getElementById(x).hidden=!on;
+    document.getElementById('tab-'+x).setAttribute('aria-selected', on?'true':'false');
+  });
+  try{ localStorage.setItem('balicek-tab', id); }catch(e){}
+}
+document.querySelectorAll('.tabs button').forEach(function(b){
+  b.addEventListener('click', function(){
+    show(b.id.slice(4));
+    var nav=document.querySelector('nav');
+    if(nav.getBoundingClientRect().top<0){ nav.scrollIntoView({block:'start'}); }
+  });
+});
+var start=(location.hash||'').slice(1);
+if(ids.indexOf(start)<0){ try{ start=localStorage.getItem('balicek-tab')||'jak'; }catch(e){ start='jak'; } }
+show(start);
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var card = btn.closest('.card');
+    var pre = btn.closest('.card-top').nextElementSibling;
+    if(!pre || pre.tagName !== 'PRE'){ pre = card.querySelector('pre'); }
+    var text = pre.innerText;
+    var label = btn.textContent;
+    function ok(){ btn.textContent = 'Zkopírováno'; btn.classList.add('done'); setTimeout(function(){ btn.textContent = label; btn.classList.remove('done'); }, 1800); }
+    function fallback(){ var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Označeno, zkopíruj'; setTimeout(function(){ btn.textContent = label; }, 2500); }
+    try{ navigator.clipboard.writeText(text).then(ok, fallback); }catch(e){ fallback(); }
+  });
+});
+document.querySelectorAll('.days input').forEach(function(cb){
+  try{ cb.checked = localStorage.getItem('vyzva-'+cb.id) === '1'; }catch(e){}
+  cb.addEventListener('change', function(){ try{ localStorage.setItem('vyzva-'+cb.id, cb.checked ? '1' : '0'); }catch(e){} });
+});
+</script>
+
+</body>
+</html>
