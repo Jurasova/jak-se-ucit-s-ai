@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Pracovní balíček pilotu AI ve vedení bakalářských a diplomových prací na FŽP ČZU: postupy a prompty pro pracovní prostor pedagoga.">
+<title>Pilot AI BP/DP: balíček</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column, sticky step tabs, prompts as copyable cards; FŽP teal identity shared with the workshop slides */
+:root{
+  --bg:#FAFBFC; --surface:#FFFFFF; --sunk:#F3F6F8; --line:#DCE3EA;
+  --fg:#14233B; --muted:#5B6678; --accent:#007364; --accent-soft:#E1F1EF; --fzp:#00AAA0; --gold:#F3C98B; --hi-bg:#14233B; --hi-fg:#FAFBFC;
+  --display:'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --body:'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1A2B; --surface:#16233A; --sunk:#1B2A44; --line:#2B3B57;
+  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#5FD0C6; --accent-soft:#163A39; --fzp:#3FC6BC; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1A2B; --surface:#16233A; --sunk:#1B2A44; --line:#2B3B57;
+  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#5FD0C6; --accent-soft:#163A39; --fzp:#3FC6BC; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:760px;margin-inline:auto;display:flex;flex-direction:column;gap:48px}
+a{color:var(--accent);text-underline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,6.5vw,48px)}
+h2{font-size:clamp(26px,5vw,32px)}
+h3{font-size:21px}
+p{margin:0}
+ul,ol{margin:0;padding-left:22px;display:grid;gap:6px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+header{padding-top:48px;display:flex;flex-direction:column;gap:16px;border-top:8px solid var(--fzp)}
+header{padding-top:40px}
+.lead{font-size:19px;color:var(--muted);max-width:62ch}
+.byline{font-size:14px;color:var(--muted)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-20px;padding:10px 20px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tabs button{font:600 15px var(--body);padding:8px 14px;border-radius:999px;border:1px solid transparent;background:var(--sunk);color:var(--fg);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+section{display:flex;flex-direction:column;gap:20px;scroll-margin-top:72px}
+.head{display:flex;flex-direction:column;gap:8px;padding-left:16px;border-left:6px solid var(--fzp)}
+.head p{color:var(--muted)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.box h3{font-size:19px}
+.result{background:var(--accent-soft);border-radius:14px;padding:16px 20px;display:flex;flex-direction:column;gap:6px}
+.result b{color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 16px 0}
+.card-top div{min-width:0;display:flex;flex-direction:column;gap:4px}
+.card-top p{font-size:15px;color:var(--muted)}
+.copy{flex:none;font:600 14px var(--body);color:var(--accent);background:var(--accent-soft);border:0;border-radius:999px;padding:8px 14px;cursor:pointer}
+.copy.done{background:var(--accent);color:var(--surface)}
+pre{margin:14px 16px 16px;padding:14px 16px;background:var(--sunk);border-radius:10px;font:15px/1.6 var(--mono);white-space:pre-wrap;word-break:break-word;overflow-x:auto}
+.tree{font:15px/1.7 var(--mono);background:var(--sunk);border-radius:10px;padding:14px 16px;white-space:pre;overflow-x:auto}
+.steps{list-style:none;padding:0;display:grid;gap:10px}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.steps .n{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);min-width:64px}
+.steps small{display:block;color:var(--muted);font-size:14px}
+.rules{background:var(--hi-bg);color:var(--hi-fg);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.rules .eyebrow{color:var(--gold)}
+.rules a{color:var(--gold)}
+.rules ul{gap:8px}
+footer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px;display:flex;flex-direction:column;gap:8px}
+@media (min-width:640px){body{padding-inline:32px} nav{margin-inline:-32px;padding-inline:32px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Pilot · AI ve vedení BP/DP · FŽP ČZU</p>
+  <h1>Pracovní prostor pro vedení závěrečných prací</h1>
+  <p class="lead">Postupy a prompty k pracovnímu setkání 1. Každý krok vytvoří jeden dokument, který se ukládá mimo chat a používá opakovaně. Prompty lze použít v Copilotu na fakultním účtu i v ChatGPT.</p>
+  <p class="byline">Vlaďka Jurasová · AI koordinátorka FŽP ČZU</p>
+</header>
+
+<nav aria-label="Části balíčku">
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" id="tab-start" aria-controls="start" aria-selected="true">Začněte zde</button>
+    <button type="button" role="tab" id="tab-k1" aria-controls="k1" aria-selected="false">1 Kontext</button>
+    <button type="button" role="tab" id="tab-k2" aria-controls="k2" aria-selected="false">2 Instrukce</button>
+    <button type="button" role="tab" id="tab-k3" aria-controls="k3" aria-selected="false">3 Kritéria</button>
+    <button type="button" role="tab" id="tab-k4" aria-controls="k4" aria-selected="false">4 Scénář</button>
+    <button type="button" role="tab" id="tab-k5" aria-controls="k5" aria-selected="false">5 Pro studenty</button>
+    <button type="button" role="tab" id="tab-ulozeni" aria-controls="ulozeni" aria-selected="false">Ukládání</button>
+    <button type="button" role="tab" id="tab-postupy" aria-controls="postupy" aria-selected="false">Hotové postupy</button>
+    <button type="button" role="tab" id="tab-pravidla" aria-controls="pravidla" aria-selected="false">Pravidla ČZU a FŽP</button>
+  </div>
+</nav>
+
+<section id="start" role="tabpanel" aria-labelledby="tab-start">
+  <div class="head"><p class="eyebrow">Začněte zde</p><h2>Co balíček obsahuje a v jakém pořadí</h2></div>
+  <ol class="steps">
+    <li><span class="n">Krok 1</span><span>Kontext semináře<small>AI se doptá na obor, studenty, průběh semináře a kritéria. Vznikne dokument 01.</small></span></li>
+    <li><span class="n">Krok 2</span><span>Instrukce pro AI<small>Z kontextu vznikne stabilní instrukce, jak má AI pracovat. Dokument 02.</small></span></li>
+    <li><span class="n">Krok 3</span><span>Kritéria kvality<small>Pro jednu fázi práce definujete, jak vypadá kvalitní výstup. Dokument 03.</small></span></li>
+    <li><span class="n">Krok 4</span><span>První scénář<small>Postup otestovaný na jednom anonymizovaném případu. Dokument 04.</small></span></li>
+    <li><span class="n">Krok 5</span><span>Verze pro studenty<small>Jednostránkový návod, který lze předat studentům. Dokument 05.</small></span></li>
+  </ol>
+  <div class="box">
+    <h3>Do příštího setkání</h3>
+    <p>Minimum jsou kroky 1 až 3. Kroky 4 a 5 jsou pro ty, kdo chtějí pokračovat. Krok 5 naváže na pracovní setkání 2.</p>
+  </div>
+  <div class="box">
+    <h3>Jak s prompty pracovat</h3>
+    <ul>
+      <li>Kroky 1 až 3 proveďte ve <b>stejné konverzaci</b>, aby AI navazovala na předchozí výsledek.</li>
+      <li>Pro analytické úlohy zvolte režim s hlubším uvažováním, pokud ho nástroj nabízí.</li>
+      <li>Každý výsledek si zkontrolujte a uložte mimo chat, postup je v části Ukládání.</li>
+      <li>Dokumenty uložte na OneDrive a vložte do projektu (ChatGPT) nebo notebooku (Copilot). Postup je v části Ukládání.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <h3>Co do AI nevkládat</h3>
+    <p>Neanonymizované osobní údaje studentů nikdy. Veřejné informace, například fakultní předpisy, lze použít v jakémkoli nástroji AI. Interní informace jen ve schváleném a licencovaném nástroji ČZU, chráněné navíc po předchozím schválení vlastníkem informace, diskrétní nikdy. Vychází to ze Směrnice rektora č. 6/2026 (čl. 5) a pokynu děkana č. 2/2025.</p>
+    <p>Pro práci používejte nástroje ze seznamu schválených nástrojů AI ČZU (intranet, Centrální pracoviště › Odbor bezpečnosti › Naše služby › Schválené nástroje AI).</p>
+  </div>
+</section>
+
+<section id="k1" role="tabpanel" aria-labelledby="tab-k1" hidden>
+  <div class="head"><p class="eyebrow">Krok 1 · Dokument 01</p><h2>Kontext semináře</h2><p>AI nejdřív zjišťuje, teprve potom sestaví dokument. Odpovědi mohou být stručné, chybějící části AI označí jako otevřené.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Prompt: Kontext semináře</h3><p>Rozhovor trvá přibližně 15 až 20 minut.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Pomoz mi vytvořit kontextový dokument pro dlouhodobou práci s AI při vedení semináře k bakalářským a diplomovým pracím na Fakultě životního prostředí ČZU.
+
+Nepřipravuj obecný text. Pokládej mi otázky po menších blocích, abys zjistil:
+1. můj obor a odbornou roli,
+2. koho učím a jaký typ prací studenti připravují,
+3. jak seminář a konzultace probíhají,
+4. ve kterých fázích mají studenti největší potíže,
+5. jaké dokumenty, pravidla a kritéria používám,
+6. co musí student vždy zvládnout sám,
+7. kde může AI pomáhat,
+8. kde by AI nahrazovala vzdělávací cíl,
+9. podle čeho poznám kvalitní odborný výstup,
+10. co musí student umět vysvětlit nebo obhájit bez AI.
+
+Nevymýšlej informace za mě. Co nevíš, označ jako otevřenou otázku.
+
+Po získání odpovědí vytvoř dokument s těmito částmi:
+# Kontext semináře BP/DP
+## Role pedagoga
+## Charakter semináře
+## Studenti a typy prací
+## Fáze procesu BP/DP
+## Nejčastější problémy
+## Používané podklady a pravidla
+## Kritéria odborné kvality
+## Role AI
+## Co musí vykonat student
+## Ověřování porozumění
+## Otevřené otázky
+
+Dokument formuluj tak, aby byl srozumitelný kolegovi a zároveň použitelný jako kontext pro AI.</pre></article>
+  <div class="result"><p><b>Uložit jako:</b> 01_Kontext_seminare</p><p><b>Kontrola:</b> pochopil by z dokumentu nový kolega, jak seminář vedete?</p></div>
+</section>
+
+<section id="k2" role="tabpanel" aria-labelledby="tab-k2" hidden>
+  <div class="head"><p class="eyebrow">Krok 2 · Dokument 02</p><h2>Instrukce pro AI</h2><p>Instrukce je určená pro AI, se kterou pracujete vy jako pedagog. Studenti ji nepoužívají, pro ně je krok 5.</p></div>
+  <div class="box">
+    <h3>Pět vrstev práce s AI</h3>
+    <ul>
+      <li><b>Instrukce:</b> jak má AI pracovat. Krátká, stejná pro každou konverzaci.</li>
+      <li><b>Kontext:</b> v jakém prostředí pracujeme. Popis semináře, oboru a studentů.</li>
+      <li><b>Zdroje:</b> z čeho smí AI čerpat fakta. Směrnice, pokyny, kritéria.</li>
+      <li><b>Úkol:</b> co je potřeba vyřešit právě teď. Píše se do konverzace.</li>
+      <li><b>Kontrola:</b> jak ověříte správnost. Dělá ji vždy člověk.</li>
+    </ul>
+  </div>
+  <article class="card"><div class="card-top"><div><h3>Prompt: Instrukce pro AI</h3><p>Ve stejné konverzaci jako krok 1.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Na základě kontextového dokumentu vytvoř krátkou stabilní instrukci pro AI, která mi pomáhá při vedení seminářů a závěrečných prací. AI pracuje pro mě jako pedagoga. Studenti s ní přímo nepracují.
+
+Instrukce má nejvýš deset pravidel a nejvýš 200 slov, aby se vešla do pole pro instrukce projektu. Podrobnosti o semináři patří do kontextu, ne do instrukce.
+
+Pravidla mají pokrýt:
+- práci s přiloženým kontextem a dokumenty a uvádění dokumentu a místa u faktů,
+- označení „potřeba ověřit“ u všeho, co v podkladech není,
+- oddělení informací z podkladů, odborného odhadu a návrhů,
+- zákaz vymýšlet pravidla ČZU a FŽP, literaturu a citace,
+- doptání na chybějící informace před návrhem,
+- návrhy pro studenty, které je vedou k vlastnímu rozhodnutí,
+- zákaz vytvářet odevzdatelný text práce místo studenta,
+- práci bez osobních údajů studentů,
+- styl odpovědí.
+
+Výsledek připrav jako samostatný dokument k uložení.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Ukázka krátké instrukce</h3><p>Deset pravidel, necelých 200 slov. Doplňte obor a porovnejte s vlastním výsledkem.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Pracuješ pro mě jako pedagoga. Studenti s tebou přímo nepracují.
+
+1. Účel: Podporuj mě při vedení bakalářských a diplomových prací v oboru [obor] na FŽP ČZU. Podrobnosti čerpej z kontextového dokumentu.
+2. Role: Buď kritickým metodickým partnerem. Nenahrazuj odborný úsudek můj ani studenta.
+3. Dokumenty: Vycházej z vložených podkladů, zohledni jejich verzi a hierarchii závaznosti. Nevymýšlej pravidla ČZU ani FŽP.
+4. Zdroje: U každého tvrzení z podkladů uveď název dokumentu a konkrétní místo (článek, část, strana).
+5. Nejistota: Chybějící, rozporné a neověřené údaje označ „potřeba ověřit“. Nevymýšlej literaturu, citace, DOI ani číselné údaje.
+6. Rozlišení: Označ, co je „z podkladů“, „odborný odhad“ a „vlastní návrh AI“.
+7. Postup: U složitějších úkolů nejdřív analyzuj, doptej se na chybějící informace (nejvýš tři otázky), pak navrhni a zkontroluj. Na jednoduché dotazy odpovídej přímo.
+8. Hranice: Cíl, otázky, metodu, interpretaci a závěry volí a zdůvodňuje student. Výstupy pro studenty formuluj jako otázky a kritéria, které ho vedou k vlastnímu rozhodnutí. Nevytvářej odevzdatelný text práce místo studenta.
+9. Data: Pokud podklad obsahuje osobní údaje studentů, upozorni na to a doporuč anonymizaci.
+10. Styl a závěr: Piš česky, věcně, bez úvodních frází. Větší úkol zakonči shrnutím: co je doložené, co ověřit a jaký je další krok.</pre></article>
+  <div class="box">
+    <h3>Test se závaznými dokumenty</h3>
+    <p>Nahrajte pokyn děkana č. 2/2025 a položte otázku: „Jak má student uvést použití AI v závěrečné práci?“ Odpověď porovnejte s přesným zněním pokynu (část 3) a ověřte, zda AI uvedla správný dokument a místo. Pak položte otázku, na kterou dokument odpověď nemá, a zkontrolujte, zda AI napíše „potřeba ověřit“. Označení „potřeba ověřit“ nezaručuje, že AI označí všechny problematické části. Závěrečnou kontrolu dělá vždy člověk.</p>
+  </div>
+  <div class="box">
+    <h3>K čemu instrukce je a kam ji dát</h3>
+    <p><b>Instrukce</b> jsou pravidla práce AI: z čeho odpovídat, jak uvádět zdroje, co nedělat za studenta. <b>Kontext</b> popisuje seminář. <b>Dokumenty</b> jsou zdroj faktů. Teprve dohromady dávají ověřitelnou odpověď.</p>
+    <p>Instrukci si uložte do složky na OneDrivu a vložte ji do projektu nebo notebooku, postup je v části <b>Ukládání</b>. Když vyjde dlouhá, napište: „Zkrať instrukci na nejvýš deset pravidel, do 200 slov. Podrobnosti přesuň do kontextu.“</p>
+  </div>
+  <div class="result"><p><b>Uložit jako:</b> 02_Instrukce_pro_AI</p></div>
+</section>
+
+<section id="k3" role="tabpanel" aria-labelledby="tab-k3" hidden>
+  <div class="head"><p class="eyebrow">Krok 3 · Dokument 03</p><h2>Kritéria kvality</h2><p>Měřítko kvality určuje pedagog, ne model. Zvolte jednu fázi: téma, cíl práce, výzkumnou otázku, rešerši nebo připravenost na konzultaci.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Prompt: Kritéria kvality</h3><p>Výchozí otázka: co musí student ve vašem oboru umět a obhájit bez AI.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Pomoz mi pojmenovat kritéria kvalitního výstupu pro tuto fázi bakalářské nebo diplomové práce:
+
+[FÁZE, například výzkumná otázka]
+
+Nejdříve se mě zeptej:
+- jaký je vzdělávací cíl této fáze,
+- co má student v této fázi prokázat,
+- jaké chyby se nejčastěji objevují,
+- jaký je rozdíl mezi přijatelným a výborným výstupem,
+- co musí student umět vysvětlit bez AI.
+
+Potom připrav:
+1. kritéria kvalitního výstupu,
+2. varovné znaky povrchního výstupu,
+3. otázky pro ověření porozumění,
+4. stručný checklist pro pedagoga.
+
+Nic nevydávej za fakultní pravidlo. Pokud něco v podkladech chybí, označ to.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Použití kritérií</h3><p>Posouzení anonymizovaného návrhu podle vytvořených kritérií.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Posuď tento návrh podle vytvořených kritérií: [anonymizovaný návrh]. Ke každému kritériu uveď hodnocení (silné / k doladění / problém) a jednu větu zdůvodnění. Návrh nepřepisuj. Na závěr uveď tři otázky, kterými ověřím, zda student svému návrhu rozumí.</pre></article>
+  <div class="result"><p><b>Uložit jako:</b> 03_Kriteria_kvality_[faze]</p></div>
+</section>
+
+<section id="k4" role="tabpanel" aria-labelledby="tab-k4" hidden>
+  <div class="head"><p class="eyebrow">Krok 4 · Dokument 04</p><h2>První scénář</h2><p>Kontext, instrukce a kritéria použité na jednom anonymizovaném případu, například příliš široké téma nebo nejasný cíl práce.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Prompt: Zdokumentovat scénář</h3><p>Na konci konverzace, ve které jste případ řešili.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Na základě této konverzace zdokumentuj pracovní scénář. Uveď:
+- výchozí problém,
+- první návrh AI,
+- co jsem odmítl/a nebo upravil/a a proč,
+- co bylo nutné ověřit,
+- výsledný postup krok za krokem,
+- roli AI, studenta a pedagoga,
+- co příště změním.
+
+Nedoplňuj nic, co v konverzaci nezaznělo. Chybějící části označ.</pre></article>
+  <div class="result"><p><b>Uložit jako:</b> 04_Scenar_[nazev]</p><p>Nevznikne jen prompt, ale zdokumentovaný postup, který lze sdílet s kolegy.</p></div>
+</section>
+
+<section id="k5" role="tabpanel" aria-labelledby="tab-k5" hidden>
+  <div class="head"><p class="eyebrow">Krok 5 · Dokument 05</p><h2>Verze pro studenty</h2><p>Z ověřeného scénáře vznikne jednostránkový návod. Princip: nejprve student, potom AI.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Prompt: Návod pro studenty</h3><p>Navazuje na krok 4.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Z ověřeného scénáře vytvoř jednostránkový pracovní návod pro studenta. Návod musí jasně oddělit:
+- co student připraví sám před použitím AI,
+- k čemu může AI využít,
+- co musí rozhodnout sám,
+- co musí ověřit v původních zdrojích,
+- co zaznamená z průběhu práce (co přijal, co odmítl a proč),
+- co musí umět vysvětlit bez AI,
+- jak pozná, že AI začíná nahrazovat jeho vlastní práci,
+- jak použití AI uvede v práci podle pokynu děkana č. 2/2025.
+
+Piš stručně, věcně a pro vysokoškolského studenta.</pre></article>
+  <div class="box">
+    <h3>Pro studenty už existuje</h3>
+    <p>Balíček promptů pro studenty FŽP s rolemi tutor, zkoušející, oponent, kouč a kurátor: <a href="https://jurasova.github.io/jak-se-ucit-s-ai/">jurasova.github.io/jak-se-ucit-s-ai</a>. Lze na něj v semináři odkázat.</p>
+  </div>
+  <div class="result"><p><b>Uložit jako:</b> 05_Navod_pro_studenty (Word nebo PDF ke sdílení)</p></div>
+</section>
+
+<section id="ulozeni" role="tabpanel" aria-labelledby="tab-ulozeni" hidden>
+  <div class="head"><p class="eyebrow">Ukládání</p><h2>Výsledek nezůstává v historii chatu</h2><p>Nástroje si kontext spolehlivě nepřenášejí mezi konverzacemi. Užitečné výsledky se proto ukládají do pracovního prostoru.</p></div>
+  <div class="box">
+    <h3>Pracovní prostor: jedna složka na OneDrivu</h3>
+<div class="tree">AI_BP_DP
+├── Pro AI
+│   ├── 01_Kontext_seminare
+│   ├── 02_Instrukce_pro_AI
+│   ├── 03_Kriteria_kvality_[faze]
+│   ├── 04_Scenar_[nazev]
+│   └── Zavazne_dokumenty (PDF)
+├── Pro lidi
+│   ├── Prehled_postupu.docx
+│   └── 05_Navod_pro_studenty.docx
+└── Zkusenosti
+    └── Zaznam_overovani</div>
+    <p>Závazné dokumenty patří do části Pro AI také. Pro AI stačí textový soubor (.txt) nebo Word. Formát Markdown (.md) je vhodný, ale není nutný. AI potřebuje strukturu, člověk srozumitelnost.</p>
+  </div>
+  <div class="box">
+    <h3>Kam co uložit a nahrát</h3>
+    <p><b>OneDrive je knihovna. Projekt nebo notebook je pracovní prostor AI. Konverzace je konkrétní úkol.</b></p>
+    <ol>
+      <li><b>Originály na OneDrive.</b> Do složky AI_BP_DP uložte 01 Kontext, 02 Instrukci, 03 Kritéria a závazné dokumenty v PDF. Je to záloha a dokumenty nejsou vázané na jeden nástroj.</li>
+      <li><b>Prostor v nástroji.</b>
+        <ul>
+          <li><b>ChatGPT:</b> vytvořte projekt „Seminář BP/DP“. Do instrukcí projektu vložte instrukci 02. Do souborů projektu nahrajte kontext 01, kritéria 03 a závazné dokumenty.</li>
+          <li><b>Copilot:</b> vytvořte notebook „Seminář BP/DP“ a přidejte kontext, instrukci, kritéria a dokumenty ze složky na OneDrivu jako zdroje. Dostupnost notebooků závisí na licenci.</li>
+        </ul>
+      </li>
+      <li><b>Práce.</b> Novou konverzaci zakládejte v projektu nebo notebooku. Zkontrolujte, že jsou potřebné zdroje připojené, a u důležitých úkolů na instrukci a konkrétní dokument výslovně odkažte.</li>
+      <li><b>Bez projektu i notebooku.</b> Na začátku běžné konverzace nahrajte soubory a napište: „Pracuj podle přiložené instrukce a kontextu. Fakta ber z přiložených dokumentů.“</li>
+      <li><b>Aktualizace.</b> Když dokument upřesníte, uložte novou verzi na OneDrive a nahraďte ji i v projektu nebo notebooku.</li>
+    </ol>
+  </div>
+  <ol class="steps">
+    <li><span class="n">Zachytit</span><span>co má hodnotu i pro příště</span></li>
+    <li><span class="n">Vyčistit</span><span>oddělit ověřené informace, rozhodnutí a otevřené otázky</span></li>
+    <li><span class="n">Uložit</span><span>pro AI strukturovaně, pro lidi čitelně</span></li>
+    <li><span class="n">Použít</span><span>začít z uloženého kontextu, ne od prázdné konverzace</span></li>
+    <li><span class="n">Upřesnit</span><span>po každém použití doplnit, co fungovalo a co ne</span></li>
+  </ol>
+  <article class="card"><div class="card-top"><div><h3>Na konci každé práce s AI</h3><p>Výstup zkontrolujte a uložte.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Shrň výsledek této konverzace k uložení. Odděl:
+- ověřené informace (se zdrojem),
+- moje rozhodnutí,
+- pracovní doporučení,
+- otevřené otázky,
+- co příště udělat jinak.
+Vynech vše jednorázové.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Kontrola celého prostoru</h3><p>Až budete mít dokumenty 01 až 05.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Zkontroluj přiložené dokumenty jako jeden pracovní systém.
+1. Najdi rozpory, duplicity a chybějící informace.
+2. Navrhni pouze nezbytné opravy.
+3. Zachovej samostatné dokumenty jako kontext pro AI.
+4. Vytvoř z nich jeden přehledný dokument pro člověka: účel, role pedagoga, studenta a AI, kritéria kvality, první scénář, pokyny pro studenty, otevřené otázky a další krok.
+Do dokumentu pro člověka nevkládej technické instrukce, které čtenář nepotřebuje.</pre></article>
+</section>
+
+<section id="postupy" role="tabpanel" aria-labelledby="tab-postupy" hidden>
+  <div class="head"><p class="eyebrow">Hotové postupy</p><h2>Prompty k výběru tématu</h2><p>Lze je použít samostatně, nebo uložit do pracovního prostoru jako opakovatelný postup.</p></div>
+  <article class="card"><div class="card-top"><div><h3>Sokratovské vedení k tématu</h3><p>Ukázka 1 z pracovního setkání 1. AI vede studenta otázkami, téma formuluje student.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Student navrhl téma: [téma]. Nevytvářej za něj finální název ani řešení. Polož mu jednu otázku, počkej na odpověď a podle ní polož další. Pomoz mu posoudit odborný problém, prostorové a časové vymezení, dostupnost dat, metodu a proveditelnost. Konkrétní varianty nabídni až poté, co student předloží vlastní úvahu.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Posudek tématu</h3><p>Opakovatelný postup pro pedagoga. Kritéria lze nahradit vlastními z kroku 3.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Posuď návrh tématu bakalářské / diplomové práce v oboru [obor]: [anonymizovaný návrh].
+
+Ke každému kritériu dej hodnocení (silné / k doladění / problém) a jednu větu zdůvodnění:
+1. odborná relevance a návaznost na obor,
+2. proveditelnost: data, metody, vybavení, čas [počet měsíců],
+3. rozsah přiměřený typu práce,
+4. možnost formulovat měřitelnou výzkumnou otázku,
+5. etika a přístup k datům,
+6. shoda s odborností školitele.
+
+Pak polož tři otázky, které by položila komise, a navrhni jednu úpravu tématu. Téma nepřepisuj, jen ukaž směr.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Oponent tématu pro studenty</h3><p>Student si téma nechá kriticky posoudit dřív, než ho přinese na konzultaci.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Jsi zkušený oponent závěrečných prací v oboru [obor]. Posuď moje navržené téma: [téma]. Je proveditelné za [počet měsíců] s dostupnými daty? Je dostatečně úzké? Kde je nejslabší místo? Polož mi tři otázky, které by položila komise. Téma nepřepisuj, jen ho kritizuj.</pre></article>
+  <article class="card"><div class="card-top"><div><h3>Záznam rozhodování studenta</h3><p>Krátký záznam místo protokolu celé konverzace.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Přijal/a jsem: …
+Odmítl/a jsem: …
+Zdůvodnění: …
+Ověřil/a jsem v původních zdrojích: …</pre></article>
+</section>
+
+<section id="pravidla" role="tabpanel" aria-labelledby="tab-pravidla" hidden>
+  <div class="rules">
+    <p class="eyebrow">Pravidla ČZU a FŽP</p>
+    <h2>Směrnice rektora č. 6/2026</h2>
+    <p>Pravidla použití nástrojů s prvky umělé inteligence na ČZU, účinná od 16. 4. 2026. Uživateli nástrojů AI jsou podle ní zaměstnanci a studenti doktorského studia (čl. 2 odst. 3).</p>
+    <ul>
+      <li><b>Schválené nástroje.</b> Pro pracovní účely se používají schválené nástroje AI. Seznam je na intranetu: Centrální pracoviště › Odbor bezpečnosti › Naše služby › Schválené nástroje AI (čl. 4 odst. 10, čl. 5 odst. 1).</li>
+      <li><b>Klasifikace informací.</b> Veřejné informace lze použít v jakémkoli nástroji AI, interní jen ve schváleném a licencovaném, chráněné navíc po předchozím schválení vlastníkem, diskrétní v žádném (čl. 5 odst. 4). Neanonymizované osobní údaje nelze použít (čl. 5 odst. 2).</li>
+      <li><b>Akademická integrita.</b> Výstupy AI se citují podle ISO 690:2022 jako elektronický zdroj a uživatel musí doložit vlastní přínos. Nástroje AI se nesmí používat k automatizovanému vytváření prací hodnocených jako samostatná odborná činnost bez odpovídajícího lidského zapojení (čl. 3 odst. 1 písm. c).</li>
+      <li><b>Ověřování.</b> Výstup AI se nepovažuje za zdroj sám o sobě. Uživatel ho musí kriticky ověřit a nese odpovědnost za jeho další použití (čl. 9 odst. 3).</li>
+      <li><b>Školení.</b> Uživatelé schválených nástrojů absolvují školení ICT bezpečnosti na bozp.czu.cz, nejméně jednou ročně (čl. 5 odst. 6).</li>
+    </ul>
+    <h2>Pokyn děkana č. 2/2025</h2>
+    <ul>
+      <li><b>Transparentnost.</b> Míru využití AI definuje vyučující, případně společně se studentem. Každý uvádí použité nástroje AI: konkrétní produkt a účel použití.</li>
+      <li><b>Odpovědnost.</b> Za obsah vytvořený AI odpovídá vždy autor práce, včetně chyb a halucinací.</li>
+      <li><b>Závěrečné práce.</b> Použití AI se uvádí v samostatné kapitole za seznamem literatury. Při použití v metodickém zpracování se podrobně popisuje v metodice.</li>
+      <li><b>Stupně použití.</b> Pokyn rozlišuje pět stupňů použití AI, od práce zcela bez AI po plné využití AI, u kterého je stále nutné uvést, jak byla AI použita.</li>
+    </ul>
+    <p><a href="https://www.fzp.czu.cz/dl/142758?lang=cs">Pokyn děkana č. 2/2025: Pokyny a doporučení pro využívání AI na FŽP ČZU (PDF)</a></p>
+    <p>Obecná pravidla pro použití AI při zpracování bakalářských a diplomových prací stanoví podle pokynu děkana Směrnice rektora č. 5/2019 ve znění novely 2/2024 (článek 6). Připravovaný metodický pokyn k BP/DP zatím není schválený a slouží jen jako pracovní podklad.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Postupy vycházejí z kurzu FAIL a z podkladů pilotu. Jsou určené k ověření v praxi a budou se upřesňovat během pilotu.</p>
+  <p>Vlaďka Jurasová · AI koordinátorka FŽP ČZU · <a href="mailto:mullerovav@fzp.czu.cz">mullerovav@fzp.czu.cz</a></p>
+</footer>
+</div>
+
+<script>
+var ids=['start','k1','k2','k3','k4','k5','ulozeni','postupy','pravidla'];
+function show(id){
+  if(ids.indexOf(id)<0) id='start';
+  ids.forEach(function(x){
+    var on=x===id;
+    document.getElementById(x).hidden=!on;
+    document.getElementById('tab-'+x).setAttribute('aria-selected', on?'true':'false');
+  });
+  try{ localStorage.setItem('bpdp-tab', id); }catch(e){}
+}
+document.querySelectorAll('.tabs button').forEach(function(b){
+  b.addEventListener('click', function(){
+    show(b.id.slice(4));
+    var nav=document.querySelector('nav');
+    if(nav.getBoundingClientRect().top<0){ nav.scrollIntoView({block:'start'}); }
+  });
+});
+var start=(location.hash||'').slice(1);
+if(ids.indexOf(start)<0){ try{ start=localStorage.getItem('bpdp-tab')||'start'; }catch(e){ start='start'; } }
+show(start);
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var pre = btn.closest('.card').querySelector('pre');
+    var text = pre.innerText;
+    var label = btn.textContent;
+    function ok(){ btn.textContent = 'Zkopírováno'; btn.classList.add('done'); setTimeout(function(){ btn.textContent = label; btn.classList.remove('done'); }, 1800); }
+    function fallback(){ var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Označeno, zkopírujte'; setTimeout(function(){ btn.textContent = label; }, 2500); }
+    try{ navigator.clipboard.writeText(text).then(ok, fallback); }catch(e){ fallback(); }
+  });
+});
+</script>
+</body>
+</html>
