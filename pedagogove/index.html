@@ -80,6 +80,8 @@ pre{margin:14px 16px 16px;padding:14px 16px;background:var(--sunk);border-radius
 .rules .eyebrow{color:var(--gold)}
 .rules a{color:var(--gold)}
 .rules ul{gap:8px}
+.alert{background:var(--hi-bg);color:var(--hi-fg);border-radius:14px;border-left:8px solid var(--gold);padding:18px 20px}
+.alert b{color:var(--gold)}
 footer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:20px;display:flex;flex-direction:column;gap:8px}
 @media (min-width:640px){body{padding-inline:32px} nav{margin-inline:-32px;padding-inline:32px}}
 </style>
@@ -242,6 +244,14 @@ Výsledek připrav jako samostatný dokument k uložení.</pre></article>
 
 <section id="k3" role="tabpanel" aria-labelledby="tab-k3" hidden>
   <div class="head"><p class="eyebrow">Krok 3 · Dokument 03</p><h2>Kritéria kvality</h2><p>Měřítko kvality určuje pedagog, ne model. Zvolte jednu fázi: téma, cíl práce, výzkumnou otázku, rešerši nebo připravenost na konzultaci.</p></div>
+  <div class="box">
+    <h3>K čemu kritéria jsou</h3>
+    <ul>
+      <li><b>Pro každou fázi zvlášť:</b> téma, výzkumná otázka, cíl, rešerše, metodika, text. Tvoří se postupně podle setkání, vždy pro fázi, kterou právě řešíte.</li>
+      <li><b>Průběžná zpětná vazba:</b> student odevzdá část práce, AI ji projde podle kritérií a připraví otázky ke konzultaci. Zpětná vazba je rychlejší a konzistentnější.</li>
+      <li><b>Sjednocení nároků:</b> když kritéria sdílí víc vedoucích, studenti dostávají podobné měřítko bez ohledu na to, kdo je vede.</li>
+    </ul>
+  </div>
   <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Prompt: Kritéria kvality</h3><p>Definuje, jak vypadá kvalitní výstup jedné fáze práce (dokument 03). Výchozí otázka: co musí student ve vašem oboru umět a obhájit bez AI.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Pomoz mi pojmenovat kritéria kvalitního výstupu pro tuto fázi bakalářské nebo diplomové práce:
 
@@ -261,8 +271,18 @@ Potom připrav:
 4. stručný checklist pro pedagoga.
 
 Nic nevydávej za fakultní pravidlo. Pokud něco v podkladech chybí, označ to.</pre></article>
-  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Použití kritérií</h3><p>Posoudí anonymizovaný návrh studenta podle vytvořených kritérií a připraví otázky k ověření porozumění.</p></div><button class="copy" type="button">Kopírovat</button></div>
-<pre>Posuď tento návrh podle vytvořených kritérií: [anonymizovaný návrh]. Ke každému kritériu uveď hodnocení (silné / k doladění / problém) a jednu větu zdůvodnění. Návrh nepřepisuj. Na závěr uveď tři otázky, kterými ověřím, zda student svému návrhu rozumí.</pre></article>
+  <div class="alert"><p><b>Hodnotí pedagog, ne AI.</b> AI pomáhá text projít podle kritérií. Závěr, hodnocení a posudek jsou vždy na vedoucím, který za ně odpovídá (směrnice rektora č. 6/2026, čl. 9 odst. 3). U finálního posudku AI nanejvýš jako kontrolní seznam, ne jako autor.</p></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Použití kritérií</h3><p>Projde návrh nebo kapitolu studenta podle kritérií a připraví otázky ke konzultaci. Hodnocení dělá pedagog.</p></div><button class="copy" type="button">Kopírovat</button></div>
+<pre>Posuď tento návrh podle vytvořených kritérií: [anonymizovaný návrh nebo část práce]. Ke každému kritériu uveď hodnocení (silné / k doladění / problém) a jednu větu zdůvodnění. Text nepřepisuj. Na závěr uveď tři otázky, kterými ověřím, zda student svému textu rozumí. Výsledné hodnocení neformuluj, to provedu sám/sama.</pre></article>
+  <div class="box">
+    <h3>Než vložíte text studenta</h3>
+    <ul>
+      <li>Rozpracovaná práce je neveřejný text. Patří jen do schváleného a licencovaného nástroje ČZU, tedy fakultního Copilotu, ne do bezplatného ChatGPT.</li>
+      <li>Bez jména studenta a bez neveřejných dat.</li>
+      <li>Studentům předem řekněte, že jejich text může procházet AI nástrojem, a k čemu.</li>
+      <li>Kritéria posuzují kvalitu práce, ne to, zda ji psala AI. To spolehlivě nezjistí žádný nástroj.</li>
+    </ul>
+  </div>
   <div class="result"><p><b>Uložit jako:</b> 03_Kriteria_kvality_[faze]</p></div>
 </section>
 
