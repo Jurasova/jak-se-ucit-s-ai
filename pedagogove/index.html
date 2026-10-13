@@ -13,17 +13,18 @@
 :root{
   --bg:#FAFBFC; --surface:#FFFFFF; --sunk:#F3F6F8; --line:#DCE3EA;
   --fg:#14233B; --muted:#5B6678; --accent:#007364; --accent-soft:#E1F1EF; --fzp:#00AAA0; --gold:#F3C98B; --hi-bg:#14233B; --hi-fg:#FAFBFC;
+  --ped-bg:#E1F1EF; --ped-fg:#00594E; --stu-bg:#FCEBD8; --stu-fg:#8A3D10; --tpl-bg:#EEF1F4; --tpl-fg:#3B4A63;
   --display:'Source Serif 4', Georgia, 'Times New Roman', serif;
   --body:'Inter', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --mono:'IBM Plex Mono', ui-monospace, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0F1A2B; --surface:#16233A; --sunk:#1B2A44; --line:#2B3B57;
-  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#5FD0C6; --accent-soft:#163A39; --fzp:#3FC6BC; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4;
+  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#5FD0C6; --accent-soft:#163A39; --fzp:#3FC6BC; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4; --ped-bg:#163A39; --ped-fg:#7FE0D6; --stu-bg:#3E2615; --stu-fg:#F4B47E; --tpl-bg:#24324A; --tpl-fg:#C3CCD9;
   color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0F1A2B; --surface:#16233A; --sunk:#1B2A44; --line:#2B3B57;
-  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#5FD0C6; --accent-soft:#163A39; --fzp:#3FC6BC; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4;
+  --fg:#E8EDF4; --muted:#A5B0C2; --accent:#5FD0C6; --accent-soft:#163A39; --fzp:#3FC6BC; --gold:#F3C98B; --hi-bg:#22385C; --hi-fg:#E8EDF4; --ped-bg:#163A39; --ped-fg:#7FE0D6; --stu-bg:#3E2615; --stu-fg:#F4B47E; --tpl-bg:#24324A; --tpl-fg:#C3CCD9;
   color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0}
@@ -60,6 +61,13 @@ section{display:flex;flex-direction:column;gap:20px;scroll-margin-top:72px}
 .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 16px 0}
 .card-top div{min-width:0;display:flex;flex-direction:column;gap:4px}
 .card-top p{font-size:15px;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:2px}
+.tag{display:inline-block;font:600 12px/1.4 var(--body);letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px}
+.tag.ped{background:var(--ped-bg);color:var(--ped-fg)}
+.tag.stu{background:var(--stu-bg);color:var(--stu-fg)}
+.tag.tpl{background:var(--tpl-bg);color:var(--tpl-fg)}
+.legend{display:flex;flex-direction:column;gap:8px}
+.legend div{display:flex;align-items:baseline;gap:10px}
 .copy{flex:none;font:600 14px var(--body);color:var(--accent);background:var(--accent-soft);border:0;border-radius:999px;padding:8px 14px;cursor:pointer}
 .copy.done{background:var(--accent);color:var(--surface)}
 pre{margin:14px 16px 16px;padding:14px 16px;background:var(--sunk);border-radius:10px;font:15px/1.6 var(--mono);white-space:pre-wrap;word-break:break-word;overflow-x:auto}
@@ -114,6 +122,14 @@ footer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);paddin
     <p>Minimum jsou kroky 1 až 3. Kroky 4 a 5 jsou pro ty, kdo chtějí pokračovat. Krok 5 naváže na pracovní setkání 2.</p>
   </div>
   <div class="box">
+    <h3>Pro koho je který prompt</h3>
+    <div class="legend">
+      <div><span class="tag ped">Pedagog</span><span>používáte vy, ve své práci s AI</span></div>
+      <div><span class="tag stu">Student</span><span>dejte studentovi, vkládá ho sám</span></div>
+      <div><span class="tag tpl">Šablona bez AI</span><span>vyplňuje se ručně, bez AI</span></div>
+    </div>
+  </div>
+  <div class="box">
     <h3>Společná sada promptů</h3>
     <p>Prompty v balíčku jsou pracovní verze. Vyzkoušejte je ve své praxi a dejte mi vědět: který prompt, na čem jste ho použili, co fungovalo a co upravit. Před každým setkáním balíček podle vašich zkušeností upravím. Z ověřených promptů vznikne na konci pilotu společná sada pro fakultu. Kontakt: <a href="mailto:mullerovav@fzp.czu.cz">mullerovav@fzp.czu.cz</a>.</p>
   </div>
@@ -135,7 +151,7 @@ footer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);paddin
 
 <section id="k1" role="tabpanel" aria-labelledby="tab-k1" hidden>
   <div class="head"><p class="eyebrow">Krok 1 · Dokument 01</p><h2>Kontext semináře</h2><p>AI nejdřív zjišťuje, teprve potom sestaví dokument. Odpovědi mohou být stručné, chybějící části AI označí jako otevřené.</p></div>
-  <article class="card"><div class="card-top"><div><h3>Prompt: Kontext semináře</h3><p>Rozhovor trvá přibližně 15 až 20 minut.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Prompt: Kontext semináře</h3><p>AI se vás doptá na obor, studenty a průběh semináře a sestaví dokument 01. Rozhovor trvá přibližně 15 až 20 minut.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Pomoz mi vytvořit kontextový dokument pro dlouhodobou práci s AI při vedení semináře k bakalářským a diplomovým pracím na Fakultě životního prostředí ČZU.
 
 Nepřipravuj obecný text. Pokládej mi otázky po menších blocích, abys zjistil:
@@ -182,7 +198,7 @@ Dokument formuluj tak, aby byl srozumitelný kolegovi a zároveň použitelný j
       <li><b>Kontrola:</b> jak ověříte správnost. Dělá ji vždy člověk.</li>
     </ul>
   </div>
-  <article class="card"><div class="card-top"><div><h3>Prompt: Instrukce pro AI</h3><p>Ve stejné konverzaci jako krok 1.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Prompt: Instrukce pro AI</h3><p>Z kontextu vytvoří krátká pravidla, jak má AI pracovat (dokument 02). Ve stejné konverzaci jako krok 1.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Na základě kontextového dokumentu vytvoř krátkou stabilní instrukci pro AI, která mi pomáhá při vedení seminářů a závěrečných prací. AI pracuje pro mě jako pedagoga. Studenti s ní přímo nepracují.
 
 Instrukce má nejvýš deset pravidel a nejvýš 200 slov, aby se vešla do pole pro instrukce projektu. Podrobnosti o semináři patří do kontextu, ne do instrukce.
@@ -199,7 +215,7 @@ Pravidla mají pokrýt:
 - styl odpovědí.
 
 Výsledek připrav jako samostatný dokument k uložení.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Ukázka krátké instrukce</h3><p>Deset pravidel, necelých 200 slov. Doplňte obor a porovnejte s vlastním výsledkem.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Hotová instrukce</h3><p>Hotová instrukce, stačí doplnit obor. Deset pravidel, necelých 200 slov. Použijte ji rovnou nebo ji porovnejte s vlastní.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Pracuješ pro mě jako pedagoga. Studenti s tebou přímo nepracují.
 
 1. Účel: Podporuj mě při vedení bakalářských a diplomových prací v oboru [obor] na FŽP ČZU. Podrobnosti čerpej z kontextového dokumentu.
@@ -226,7 +242,7 @@ Výsledek připrav jako samostatný dokument k uložení.</pre></article>
 
 <section id="k3" role="tabpanel" aria-labelledby="tab-k3" hidden>
   <div class="head"><p class="eyebrow">Krok 3 · Dokument 03</p><h2>Kritéria kvality</h2><p>Měřítko kvality určuje pedagog, ne model. Zvolte jednu fázi: téma, cíl práce, výzkumnou otázku, rešerši nebo připravenost na konzultaci.</p></div>
-  <article class="card"><div class="card-top"><div><h3>Prompt: Kritéria kvality</h3><p>Výchozí otázka: co musí student ve vašem oboru umět a obhájit bez AI.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Prompt: Kritéria kvality</h3><p>Definuje, jak vypadá kvalitní výstup jedné fáze práce (dokument 03). Výchozí otázka: co musí student ve vašem oboru umět a obhájit bez AI.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Pomoz mi pojmenovat kritéria kvalitního výstupu pro tuto fázi bakalářské nebo diplomové práce:
 
 [FÁZE, například výzkumná otázka]
@@ -245,14 +261,14 @@ Potom připrav:
 4. stručný checklist pro pedagoga.
 
 Nic nevydávej za fakultní pravidlo. Pokud něco v podkladech chybí, označ to.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Použití kritérií</h3><p>Posouzení anonymizovaného návrhu podle vytvořených kritérií.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Použití kritérií</h3><p>Posoudí anonymizovaný návrh studenta podle vytvořených kritérií a připraví otázky k ověření porozumění.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Posuď tento návrh podle vytvořených kritérií: [anonymizovaný návrh]. Ke každému kritériu uveď hodnocení (silné / k doladění / problém) a jednu větu zdůvodnění. Návrh nepřepisuj. Na závěr uveď tři otázky, kterými ověřím, zda student svému návrhu rozumí.</pre></article>
   <div class="result"><p><b>Uložit jako:</b> 03_Kriteria_kvality_[faze]</p></div>
 </section>
 
 <section id="k4" role="tabpanel" aria-labelledby="tab-k4" hidden>
   <div class="head"><p class="eyebrow">Krok 4 · Dokument 04</p><h2>První scénář</h2><p>Kontext, instrukce a kritéria použité na jednom anonymizovaném případu, například příliš široké téma nebo nejasný cíl práce.</p></div>
-  <article class="card"><div class="card-top"><div><h3>Prompt: Zdokumentovat scénář</h3><p>Na konci konverzace, ve které jste případ řešili.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Prompt: Zdokumentovat scénář</h3><p>Z konverzace, ve které jste řešili konkrétní případ, udělá sdílitelný postup (dokument 04). Vložte na konci té konverzace.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Na základě této konverzace zdokumentuj pracovní scénář. Uveď:
 - výchozí problém,
 - první návrh AI,
@@ -268,7 +284,7 @@ Nedoplňuj nic, co v konverzaci nezaznělo. Chybějící části označ.</pre></
 
 <section id="k5" role="tabpanel" aria-labelledby="tab-k5" hidden>
   <div class="head"><p class="eyebrow">Krok 5 · Dokument 05</p><h2>Verze pro studenty</h2><p>Z ověřeného scénáře vznikne jednostránkový návod. Princip: nejprve student, potom AI.</p></div>
-  <article class="card"><div class="card-top"><div><h3>Prompt: Návod pro studenty</h3><p>Navazuje na krok 4.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Prompt: Návod pro studenty</h3><p>Z ověřeného scénáře udělá jednostránkový návod pro studenty (dokument 05). Navazuje na krok 4.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Z ověřeného scénáře vytvoř jednostránkový pracovní návod pro studenta. Návod musí jasně oddělit:
 - co student připraví sám před použitím AI,
 - k čemu smí AI využít podle směrnice rektora č. 7/2026 a zadání práce (mimo rešeršní část jen tehdy, když to vedoucí uvede v zadání),
@@ -328,7 +344,7 @@ Piš stručně, věcně a pro vysokoškolského studenta.</pre></article>
     <li><span class="n">Použít</span><span>začít z uloženého kontextu, ne od prázdné konverzace</span></li>
     <li><span class="n">Upřesnit</span><span>po každém použití doplnit, co fungovalo a co ne</span></li>
   </ol>
-  <article class="card"><div class="card-top"><div><h3>Na konci každé práce s AI</h3><p>Výstup zkontrolujte a uložte.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Na konci každé práce s AI</h3><p>Shrne konverzaci k uložení: ověřené informace, vaše rozhodnutí a otevřené otázky. Výstup zkontrolujte a uložte.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Shrň výsledek této konverzace k uložení. Odděl:
 - ověřené informace (se zdrojem),
 - moje rozhodnutí,
@@ -336,7 +352,7 @@ Piš stručně, věcně a pro vysokoškolského studenta.</pre></article>
 - otevřené otázky,
 - co příště udělat jinak.
 Vynech vše jednorázové.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Kontrola celého prostoru</h3><p>Až budete mít dokumenty 01 až 05.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Kontrola celého prostoru</h3><p>Najde rozpory a mezery v dokumentech 01 až 05 a připraví z nich přehled pro lidi. Až budete mít všech pět.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Zkontroluj přiložené dokumenty jako jeden pracovní systém.
 1. Najdi rozpory, duplicity a chybějící informace.
 2. Navrhni pouze nezbytné opravy.
@@ -347,7 +363,7 @@ Do dokumentu pro člověka nevkládej technické instrukce, které čtenář nep
 
 <section id="postupy" role="tabpanel" aria-labelledby="tab-postupy" hidden>
   <div class="head"><p class="eyebrow">Hotové postupy</p><h2>Prompty k výběru tématu</h2><p>Lze je použít samostatně, nebo uložit do pracovního prostoru jako opakovatelný postup.</p></div>
-  <article class="card"><div class="card-top"><div><h3>Výběr z vypsaných témat</h3><p>Pro studenty, kteří nemají vlastní nápad. Vedoucí jim dá seznam svých témat, ideálně s krátkým popisem každého. Na konzultaci student přinese vybrané téma, zdůvodnění a otázky.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag stu">Student</span></span><h3>Výběr z vypsaných témat</h3><p>Zeptá se studenta na zájmy a dovednosti a ukáže dvě až tři vhodná témata ze seznamu vedoucího. Rozhoduje student. Pro studenty bez vlastního nápadu: dejte jim seznam svých témat, ideálně s krátkým popisem. Na konzultaci student přinese vybrané téma, zdůvodnění a otázky.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Pomoz mi vybrat téma bakalářské / diplomové práce ze seznamu, který nabízí můj vedoucí. Téma za mě nevybírej.
 
 Seznam témat:
@@ -359,9 +375,9 @@ Postup:
 3. Polož mi tři otázky, které si mám vyjasnit s vedoucím, než se rozhodnu.
 
 Rozhodnutí je moje. Nic nevydávej za jistotu, pokud to nevyplývá ze seznamu nebo z mých odpovědí.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Sokratovské vedení k tématu</h3><p>Pro studenty, kteří už mají vlastní nápad. Prompt vkládá student sám. AI ho vede otázkami, téma formuluje student. Ukázka 1 z pracovního setkání 1.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag stu">Student</span></span><h3>Sokratovské vedení k tématu</h3><p>Vede studenta otázkami k vlastnímu zúžení tématu, téma formuluje student. Pro studenty, kteří už mají vlastní nápad. Ukázka 1 z pracovního setkání 1.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Navrhuji téma: [téma]. Nevytvářej za mě finální název ani řešení. Polož mi jednu otázku, počkej na mou odpověď a podle ní polož další. Pomoz mi posoudit odborný problém, prostorové a časové vymezení, dostupnost dat, metodu a proveditelnost. Konkrétní varianty nabídni až poté, co předložím vlastní úvahu.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Příprava konzultace k tématu</h3><p>Pro pedagoga, když student přijde se širokým nápadem. Kontext stačí vyplnit v šesti řádcích.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Příprava konzultace k tématu</h3><p>Ze širokého nápadu studenta připraví otázky pro konzultaci a body k ověření. Kontext vyplníte v šesti řádcích, anonymizovaně.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Pomoz mi připravit konzultaci se studentem nad širokým tématem závěrečné práce. Téma za studenta nevybírej a nenavrhuj finální název.
 
 Kontext:
@@ -387,7 +403,7 @@ Výstup:
 - návrh dalšího kroku konzultace.
 
 Nic nevydávej za fakt, pokud to nevyplývá z uvedeného kontextu. Nejisté údaje označ „potřeba ověřit“.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Posudek tématu</h3><p>Opakovatelný postup pro pedagoga. Kritéria lze nahradit vlastními z kroku 3.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag ped">Pedagog</span></span><h3>Posudek tématu</h3><p>Ohodnotí návrh tématu podle šesti kritérií a připraví otázky, které by položila komise. Kritéria lze nahradit vlastními z kroku 3.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Posuď návrh tématu bakalářské / diplomové práce v oboru [obor]: [anonymizovaný návrh].
 
 Ke každému kritériu dej hodnocení (silné / k doladění / problém) a jednu větu zdůvodnění:
@@ -399,9 +415,9 @@ Ke každému kritériu dej hodnocení (silné / k doladění / problém) a jednu
 6. shoda s odborností školitele.
 
 Pak polož tři otázky, které by položila komise, a navrhni jednu úpravu tématu. Téma nepřepisuj, jen ukaž směr.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Oponent tématu pro studenty</h3><p>Student si téma nechá kriticky posoudit dřív, než ho přinese na konzultaci.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag stu">Student</span></span><h3>Oponent tématu</h3><p>Kriticky posoudí téma studenta: proveditelnost, šíři a nejslabší místo. Student ho použije dřív, než téma přinese na konzultaci.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Jsi zkušený oponent závěrečných prací v oboru [obor]. Posuď moje navržené téma: [téma]. Je proveditelné za [počet měsíců] s dostupnými daty? Je dostatečně úzké? Kde je nejslabší místo? Polož mi tři otázky, které by položila komise. Téma nepřepisuj, jen ho kritizuj.</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Výzkumný záměr na první konzultaci</h3><p>Pro studenty. Jedna strana, kterou student vyplní sám, bez AI, před první konzultací. Z konzultace se tak stane odborná diskuse.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag stu">Student</span><span class="tag tpl">Šablona bez AI</span></span><h3>Výzkumný záměr na první konzultaci</h3><p>Jedna strana, kterou student vyplní sám, bez AI, před první konzultací. Z konzultace se tak stane odborná diskuse.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Oblast zájmu:
 Problém, který mě zajímá:
 Můj návrh výzkumné otázky:
@@ -410,7 +426,7 @@ Tři až pět odborných zdrojů, které jsem dohledal/a a přečetl/a:
 Představa o datech a metodě:
 Možná rizika (data, čas, vybavení, povolení):
 Otázky na vedoucího:</pre></article>
-  <article class="card"><div class="card-top"><div><h3>Záznam rozhodování studenta</h3><p>Krátký záznam místo protokolu celé konverzace.</p></div><button class="copy" type="button">Kopírovat</button></div>
+  <article class="card"><div class="card-top"><div><span class="tags"><span class="tag stu">Student</span><span class="tag tpl">Šablona bez AI</span></span><h3>Záznam rozhodování studenta</h3><p>Student zapíše, co z návrhů AI přijal, co odmítl a proč. Krátký záznam místo protokolu celé konverzace.</p></div><button class="copy" type="button">Kopírovat</button></div>
 <pre>Přijal/a jsem: …
 Odmítl/a jsem: …
 Zdůvodnění: …
